@@ -1,34 +1,40 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <title>Malla Curricular Interactiva</title>
+  <meta charset="UTF-8" />
+  <title>Malla Curricular Psicología</title>
   <style>
     body {
       font-family: sans-serif;
-      background: #f0f0f0;
-      padding: 20px;
+      background: #f7f7f7;
+      padding: 30px;
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 40px;
     }
 
     .semestre {
       background: white;
       border: 2px solid #ccc;
-      border-radius: 10px;
-      padding: 15px;
-      margin-bottom: 20px;
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 25px;
     }
 
     .semestre h2 {
       margin-top: 0;
+      color: #444;
     }
 
     .ramo {
       display: inline-block;
-      background: #ccc;
+      background: #b0b0b0;
       color: white;
       padding: 10px 15px;
-      margin: 5px;
-      border-radius: 5px;
+      margin: 6px;
+      border-radius: 6px;
       cursor: pointer;
       transition: all 0.2s ease;
       text-decoration: none;
@@ -42,38 +48,121 @@
 </head>
 <body>
 
-  <h1>Malla Curricular</h1>
+  <h1>Malla Curricular Psicología</h1>
 
-  <div class="semestre" id="sem1">
-    <h2>1er Semestre</h2>
-    <div class="ramo" data-id="ramo1">Psicología General</div>
-    <div class="ramo" data-id="ramo2">Biología</div>
-    <div class="ramo" data-id="ramo3">Historia de la Psicología</div>
-  </div>
-
-  <div class="semestre" id="sem2">
-    <h2>2do Semestre</h2>
-    <div class="ramo" data-id="ramo4">Neurociencia</div>
-    <div class="ramo" data-id="ramo5">Estadística</div>
-    <div class="ramo" data-id="ramo6">Psicología del Desarrollo</div>
-  </div>
+  <!-- SEMESTRES -->
+  <div id="malla"></div>
 
   <script>
-    document.querySelectorAll('.ramo').forEach(ramo => {
-      const id = ramo.dataset.id;
-      if (localStorage.getItem(id) === 'aprobado') {
-        ramo.classList.add('aprobado');
-      }
+    const malla = {
+      "1er Semestre": [
+        "Comunidad y Desarrollo Local",
+        "Antropología Sociocultural",
+        "Introducción a la Psicología",
+        "Familia y Sociedad",
+        "Taller de comunicación",
+        "Taller: Persona y Desarrollo Sustentable"
+      ],
+      "2do Semestre": [
+        "Taller de Investigación",
+        "Psicología del Desarrollo: Infancia y Adolescencia",
+        "Teoría de la Personalidad",
+        "Procesos Cognitivos",
+        "Procesos Afectivos y Motivacionales",
+        "Taller: Persona, Patrimonio y Cultura Regional"
+      ],
+      "3er Semestre": [
+        "Taller de Diagnóstico I",
+        "Psicología del Desarrollo: Adultez",
+        "Psicología del Comportamiento Social",
+        "Psicoanálisis",
+        "Corrientes Fenomenológicas de la Piscología",
+        "Taller: Persona e Interculturalidad"
+      ],
+      "4to Semestre": [
+        "Taller de Diagnóstico II",
+        "Psicopatología",
+        "Psicología del Aprendizaje",
+        "Psicoterapia Psicodinámica",
+        "Psicoterapia",
+        "Taller: Persona y Expresión Artística"
+      ],
+      "5to Semestre": [
+        "Taller de Diagnóstico III",
+        "Bases Biológicas del Comportamiento",
+        "Terapia Cognitivo Conductual",
+        "Psicoterapia Humanista",
+        "Terapia Sistémica",
+        "Electivo de Formación General: Salud mental y Artes marciales"
+      ],
+      "6to Semestre": [
+        "Taller de Intervención I",
+        "Psiquiatría y Farmacoterapia",
+        "Psicología Educacional y Escolar",
+        "Psicología Organizacional- Laboral",
+        "Taller de Técnicas de Intervención Psicoterapéuticas",
+        "Electivo de Formación Profesional: Psicología Jurídica y Forense"
+      ],
+      "7mo Semestre": [
+        "Taller de Intervención Clínica",
+        "Taller de Elaboración y Evaluación de Proyectos",
+        "Metodología de la Investigación Cuantitativa",
+        "Asignaturas de Mención: Gestión Organizacional",
+        "Gestión de Competencias en el Ámbito de las Organizacional",
+        "Legislación Laboral"
+      ],
+      "8vo Semestre": [
+        "Taller de Estrategias Psicoeducativas",
+        "Metodología de la Investigación Cualitativa",
+        "Taller de Intervención de Organizacional – Laboral",
+        "Asignaturas de Mención: Selección y Reclutamiento de Personal",
+        "Diagnostico y Desarrollo Organizacional",
+        "Gestión y Desarrollo del Personal"
+      ],
+      "9no Semestre": [
+        "Taller de Inducción a la Intervención Clínica",
+        "Taller de Formación para el Trabajo",
+        "Práctica de Psicología Organizacional - Laboral",
+        "Seminario"
+      ],
+      "10mo Semestre": [
+        "PRACTICA CLINICA"
+      ]
+    };
 
-      ramo.addEventListener('click', () => {
-        ramo.classList.toggle('aprobado');
-        if (ramo.classList.contains('aprobado')) {
-          localStorage.setItem(id, 'aprobado');
-        } else {
-          localStorage.removeItem(id);
+    const contenedor = document.getElementById("malla");
+
+    Object.entries(malla).forEach(([semestre, ramos], index) => {
+      const div = document.createElement("div");
+      div.className = "semestre";
+      div.innerHTML = `<h2>${semestre}</h2>`;
+      ramos.forEach((ramo, i) => {
+        const id = `s${index}r${i}`;
+        const ramoDiv = document.createElement("div");
+        ramoDiv.className = "ramo";
+        ramoDiv.dataset.id = id;
+        ramoDiv.textContent = ramo;
+
+        // Restaurar estado desde localStorage
+        if (localStorage.getItem(id) === "aprobado") {
+          ramoDiv.classList.add("aprobado");
         }
+
+        // Click para marcar o desmarcar
+        ramoDiv.addEventListener("click", () => {
+          ramoDiv.classList.toggle("aprobado");
+          if (ramoDiv.classList.contains("aprobado")) {
+            localStorage.setItem(id, "aprobado");
+          } else {
+            localStorage.removeItem(id);
+          }
+        });
+
+        div.appendChild(ramoDiv);
       });
+      contenedor.appendChild(div);
     });
   </script>
+
 </body>
 </html>
