@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Malla Curricular Interactiva</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      background: #f0f0f0;
+      padding: 20px;
+    }
+
+    .semestre {
+      background: white;
+      border: 2px solid #ccc;
+      border-radius: 10px;
+      padding: 15px;
+      margin-bottom: 20px;
+    }
+
+    .semestre h2 {
+      margin-top: 0;
+    }
+
+    .ramo {
+      display: inline-block;
+      background: #ccc;
+      color: white;
+      padding: 10px 15px;
+      margin: 5px;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      text-decoration: none;
+    }
+
+    .ramo.aprobado {
+      background: #6a0dad;
+      text-decoration: line-through;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Malla Curricular</h1>
+
+  <div class="semestre" id="sem1">
+    <h2>1er Semestre</h2>
+    <div class="ramo" data-id="ramo1">Psicología General</div>
+    <div class="ramo" data-id="ramo2">Biología</div>
+    <div class="ramo" data-id="ramo3">Historia de la Psicología</div>
+  </div>
+
+  <div class="semestre" id="sem2">
+    <h2>2do Semestre</h2>
+    <div class="ramo" data-id="ramo4">Neurociencia</div>
+    <div class="ramo" data-id="ramo5">Estadística</div>
+    <div class="ramo" data-id="ramo6">Psicología del Desarrollo</div>
+  </div>
+
+  <script>
+    document.querySelectorAll('.ramo').forEach(ramo => {
+      const id = ramo.dataset.id;
+      if (localStorage.getItem(id) === 'aprobado') {
+        ramo.classList.add('aprobado');
+      }
+
+      ramo.addEventListener('click', () => {
+        ramo.classList.toggle('aprobado');
+        if (ramo.classList.contains('aprobado')) {
+          localStorage.setItem(id, 'aprobado');
+        } else {
+          localStorage.removeItem(id);
+        }
+      });
+    });
+  </script>
+</body>
+</html>
